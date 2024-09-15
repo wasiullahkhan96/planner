@@ -14,6 +14,7 @@ public class ActivityMapper {
                 .id(activity.getId())
                 .name(activity.getName())
                 .location(activity.getLocation())
+                .date(activity.getDate())
                 .startTime(activity.getStartTime())
                 .endTime(activity.getEndTime())
                 .totalSeats(activity.getTotalSeats())
@@ -27,6 +28,7 @@ public class ActivityMapper {
                 .id(activityDTO.getId())  // If id needs to be set
                 .name(activityDTO.getName())
                 .location(activityDTO.getLocation())
+                .date(activityDTO.getDate())
                 .startTime(activityDTO.getStartTime())
                 .endTime(activityDTO.getEndTime())
                 .totalSeats(activityDTO.getTotalSeats())

@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -19,16 +21,18 @@ import java.time.LocalDateTime;
 public class Activity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String name;
 
     private String location;
 
-    private LocalDateTime startTime;
+    private LocalDate date;
 
-    private LocalDateTime endTime;
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 
     private int totalSeats;
 
