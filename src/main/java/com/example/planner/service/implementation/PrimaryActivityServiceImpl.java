@@ -1,45 +1,57 @@
-package com.example.planner.services;
+package com.example.planner.service.implementation;
 
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.planner.DTOs.ActivityDTO;
-import com.example.planner.mappers.ActivityMapper;
-import com.example.planner.models.Activity;
-import com.example.planner.repositories.ActivityRepository;
+import com.example.planner.dto.ActivityDTO;
+import com.example.planner.mapper.ActivityMapper;
+import com.example.planner.model.Activity;
+import com.example.planner.repository.ActivityRepository;
+import com.example.planner.service.ActivityService;
 
 @Service
-public class ActivityService {
+public class PrimaryActivityServiceImpl implements ActivityService {
 
     @Autowired
     private ActivityRepository activityRepository;
 
-    // Get all activities
-    public List<ActivityDTO> getAllActivities() {
-        return activityRepository.findAll()
-                .stream()
-                .map(ActivityMapper::toDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    private ActivityMapper activityMapper; 
+
+    @Override
+    public List<ActivityDTO> getAllActivities(String name, LocalDate date, Boolean available) {
+        List<Activity> activities;
+        
+
+        // Convert Activity to ActivityDTO if needed
+        // return activities.stream()
+        //     .map(activityMapper::toDTO)
+        //     .collect(Collectors.toList());
+
+        return new ArrayList<>();
     }
 
+    @Override
     // Get a single activity by ID
     public Optional<ActivityDTO> getActivityById(Long id) {
         return activityRepository.findById(id)
-                .map(ActivityMapper::toDTO);
+                .map(activityMapper::toDTO);
     }
 
+    @Override
     // Create a new activity
     public ActivityDTO createActivity(ActivityDTO activityDTO) {
-        Activity activity = ActivityMapper.toEntity(activityDTO);
+        Activity activity = activityMapper.toEntity(activityDTO);
         Activity savedActivity = activityRepository.save(activity);
-        return ActivityMapper.toDTO(savedActivity);
+        return activityMapper.toDTO(savedActivity);
     }
 
+    @Override
     // Update an existing activity
     public Optional<ActivityDTO> updateActivity(Long id, ActivityDTO activityDTO) {
         return activityRepository.findById(id)
@@ -51,10 +63,11 @@ public class ActivityService {
                     existingActivity.setTotalSeats(activityDTO.getTotalSeats());
                     existingActivity.setOccupiedSeats(activityDTO.getOccupiedSeats());
                     Activity updatedActivity = activityRepository.save(existingActivity);
-                    return ActivityMapper.toDTO(updatedActivity);
+                    return activityMapper.toDTO(updatedActivity);
                 });
     }
 
+    @Override
     // Delete an activity by ID
     public boolean deleteActivity(Long id) {
         if (activityRepository.existsById(id)) {

@@ -2,8 +2,10 @@ package com.example.planner.controllers;
 
 
 import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.planner.DTOs.ActivityDTO;
-import com.example.planner.services.ActivityService;
+import com.example.planner.dto.ActivityDTO;
+import com.example.planner.service.ActivityService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,18 +31,23 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/activities")
 public class ActivityController {
 
+    // Here we inject the service, with the latest versions of Spring there is no 
+    // for a explicit constructor injection
     @Autowired
     private ActivityService activityService;
 
-    // Get all activities without pagination
-    @Operation(summary = "Get all activities", description = "Fetch all activities without pagination.")
+    // Get all activities according to filters
+    @Operation(summary = "Get all activities", description = "Fetch all activities according to filters.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved activities", content = @Content(schema = @Schema(implementation = List.class))),
         @ApiResponse(responseCode = "400", description = "Invalid parameters supplied", content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<ActivityDTO>> getAllActivities() {
-        List<ActivityDTO> activities = activityService.getAllActivities();
+    public ResponseEntity<List<ActivityDTO>> getAllActivities(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @RequestParam(required = false) Boolean available) {
+        List<ActivityDTO> activities = activityService.getAllActivities(name, date, available);
         return ResponseEntity.ok(activities);
     }
 
@@ -52,8 +60,8 @@ public class ActivityController {
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long id) {
         return activityService.getActivityById(id)
-                              .map(ResponseEntity::ok)
-                              .orElseGet(() -> ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Create a new activity with validation
@@ -78,8 +86,8 @@ public class ActivityController {
     @PutMapping("/{id}")
     public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDTO activityDTO) {
         return activityService.updateActivity(id, activityDTO)
-                              .map(ResponseEntity::ok)
-                              .orElseGet(() -> ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Delete an activity by ID

@@ -1,12 +1,15 @@
-package com.example.planner.mappers;
+package com.example.planner.mapper;
 
-import com.example.planner.DTOs.ActivityDTO;
-import com.example.planner.models.Activity;
+import org.springframework.stereotype.Component;
 
+import com.example.planner.dto.ActivityDTO;
+import com.example.planner.model.Activity;
+
+@Component
 public class ActivityMapper {
 
     // Converts Entity to DTO
-    public static ActivityDTO toDTO(Activity activity) {
+    public ActivityDTO toDTO(Activity activity) {
         return ActivityDTO.builder()
                 .id(activity.getId())
                 .name(activity.getName())
@@ -19,7 +22,7 @@ public class ActivityMapper {
     }
 
     // Converts DTO to Entity
-    public static Activity toEntity(ActivityDTO activityDTO) {
+    public Activity toEntity(ActivityDTO activityDTO) {
         return Activity.builder()
                 .id(activityDTO.getId())  // If id needs to be set
                 .name(activityDTO.getName())

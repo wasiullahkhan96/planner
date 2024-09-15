@@ -1,9 +1,9 @@
-package com.example.planner.repositories;
+package com.example.planner.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.planner.models.Activity;
+import com.example.planner.model.Activity;
 
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {

@@ -1,4 +1,4 @@
-package com.example.planner.DTOs;
+package com.example.planner.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
