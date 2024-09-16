@@ -41,5 +41,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidDateRange(InvalidDateRangeException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<String> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 
 }
