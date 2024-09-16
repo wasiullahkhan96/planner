@@ -2,6 +2,7 @@ package com.example.planner.utlis;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -9,7 +10,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtil {
-    private final String SECRET_KEY = "1eddb83af7fe5142b904084bbfd75d4d2cd9800393efbb7dbc3379683c4decc8";
+
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
 
     public String generateToken(String username) {
         return Jwts.builder()
